@@ -1,5 +1,4 @@
 import AnimationSlot from './AnimationSlot';
-import { LOTTIE_URLS } from './lottieUrls';
 import { Slider } from '@/components/ui/slider';
 
 interface BudgetStepProps {
@@ -17,7 +16,7 @@ const BudgetStep = ({ budget, onChange }: BudgetStepProps) => {
         We'll only show deals in your range
       </p>
 
-      <AnimationSlot label="budget-sneaker-morph" src={LOTTIE_URLS.budgetMorph} className="h-36 w-full" />
+      <AnimationSlot label="budget-sneaker-morph" className="h-32 w-full" />
 
       <div className="flex flex-col gap-4 rounded-2xl bg-onboarding-surface p-6">
         <div className="flex items-center justify-between">

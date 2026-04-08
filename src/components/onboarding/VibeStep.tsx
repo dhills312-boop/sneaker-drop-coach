@@ -1,14 +1,13 @@
 import type { Vibe } from '@/types/onboarding';
 import AnimationSlot from './AnimationSlot';
-import { LOTTIE_URLS } from './lottieUrls';
 
-const VIBES: { id: Vibe; label: string; desc: string; lottie: string }[] = [
-  { id: 'retro', label: '🕹️ Retro', desc: 'Vintage classics & throwbacks', lottie: LOTTIE_URLS.vibeRetro },
-  { id: 'performance', label: '🏃 Performance', desc: 'Built for the court & track', lottie: LOTTIE_URLS.vibePerformance },
-  { id: 'hype', label: '🔥 Hype', desc: 'Limited drops & collabs', lottie: LOTTIE_URLS.vibeHype },
-  { id: 'everyday', label: '👟 Everyday', desc: 'Clean, versatile go-tos', lottie: LOTTIE_URLS.vibeEveryday },
-  { id: 'luxe', label: '💎 Luxe', desc: 'Premium materials & designer', lottie: LOTTIE_URLS.vibeLuxe },
-  { id: 'outdoor', label: '🏔️ Outdoor', desc: 'Trail-ready & rugged', lottie: LOTTIE_URLS.vibeOutdoor },
+const VIBES: { id: Vibe; label: string; desc: string }[] = [
+  { id: 'retro', label: '🕹️ Retro', desc: 'Vintage classics & throwbacks' },
+  { id: 'performance', label: '🏃 Performance', desc: 'Built for the court & track' },
+  { id: 'hype', label: '🔥 Hype', desc: 'Limited drops & collabs' },
+  { id: 'everyday', label: '👟 Everyday', desc: 'Clean, versatile go-tos' },
+  { id: 'luxe', label: '💎 Luxe', desc: 'Premium materials & designer' },
+  { id: 'outdoor', label: '🏔️ Outdoor', desc: 'Trail-ready & rugged' },
 ];
 
 interface VibeStepProps {
@@ -46,8 +45,7 @@ const VibeStep = ({ selected, onChange }: VibeStepProps) => {
             >
               <AnimationSlot
                 label={`vibe-${vibe.id}-loop`}
-                src={vibe.lottie}
-                className="h-16 w-full"
+                className="h-16 w-full !p-2 !border-onboarding-muted/20"
               />
               <span className="font-syne font-bold text-base">{vibe.label}</span>
               <span className="text-xs text-onboarding-muted">{vibe.desc}</span>

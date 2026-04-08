@@ -1,4 +1,5 @@
 import AnimationSlot from './AnimationSlot';
+import { LOTTIE_URLS } from './lottieUrls';
 
 interface WelcomeStepProps {
   onNext: () => void;
@@ -6,7 +7,7 @@ interface WelcomeStepProps {
 
 const WelcomeStep = ({ onNext }: WelcomeStepProps) => (
   <div className="flex flex-col items-center justify-center min-h-screen gap-8 px-6 text-center">
-    <AnimationSlot label="logo-particle-reveal" className="w-40 h-40" />
+    <AnimationSlot label="logo-particle-reveal" src={LOTTIE_URLS.logoReveal} className="w-48 h-48" />
     <h1 className="font-syne text-5xl font-extrabold tracking-tight text-onboarding-text">
       Hype<span className="text-brand-purple">Feed</span>
     </h1>

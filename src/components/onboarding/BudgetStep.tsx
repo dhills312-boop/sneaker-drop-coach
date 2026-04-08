@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import AnimationSlot from './AnimationSlot';
 import { Slider } from '@/components/ui/slider';
 import analyticsAnim from '@/assets/lottie/Business_Analytics.json';
@@ -10,14 +11,26 @@ interface BudgetStepProps {
 const BudgetStep = ({ budget, onChange }: BudgetStepProps) => {
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="font-syne text-3xl font-bold text-onboarding-text">
-        Set your budget
-      </h2>
-      <p className="text-onboarding-muted text-sm">
-        We'll only show deals in your range
-      </p>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <h2 className="font-syne text-3xl font-bold text-onboarding-text">
+          Set your budget
+        </h2>
+        <p className="text-onboarding-muted text-sm mt-2">
+          We'll only show deals in your range
+        </p>
+      </motion.div>
 
-      <AnimationSlot label="budget-sneaker-morph" animationData={analyticsAnim} className="h-32 w-full" />
+      <motion.div
+        initial={{ opacity: 0, scale: 0.92 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1, duration: 0.35 }}
+      >
+        <AnimationSlot label="budget-sneaker-morph" animationData={analyticsAnim} className="h-32 w-full" />
+      </motion.div>
 
       <div className="flex flex-col gap-4 rounded-2xl bg-onboarding-surface p-6">
         <div className="flex items-center justify-between">

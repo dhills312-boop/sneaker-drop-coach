@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import { INITIAL_STATE, TOTAL_STEPS, type OnboardingState, type Vibe, type AlertPrefs } from '@/types/onboarding';
 import StepIndicator from './StepIndicator';
 import WelcomeStep from './WelcomeStep';
@@ -20,13 +21,35 @@ function loadState(): OnboardingState {
   return INITIAL_STATE;
 }
 
+const stepVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 80 : -80,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -80 : 80,
+    opacity: 0,
+  }),
+};
+
 const OnboardingFlow = () => {
   const [state, setState] = useState<OnboardingState>(loadState);
+  const [direction, setDirection] = useState(1);
+  const prevStep = useRef(state.step);
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
+
+  useEffect(() => {
+    setDirection(state.step > prevStep.current ? 1 : -1);
+    prevStep.current = state.step;
+  }, [state.step]);
 
   const update = (patch: Partial<OnboardingState>) =>
     setState((prev) => ({ ...prev, ...patch }));
@@ -72,19 +95,45 @@ const OnboardingFlow = () => {
   const showNav = state.step > 0 && state.step < TOTAL_STEPS - 1;
 
   return (
-    <div className="min-h-screen bg-onboarding-bg text-onboarding-text font-inter">
+    <div className="min-h-screen bg-onboarding-bg text-onboarding-text font-inter overflow-hidden">
       {state.step === 0 ? (
-        renderStep()
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.4, ease: 'easeOut' }}
+        >
+          {renderStep()}
+        </motion.div>
       ) : (
         <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
           <div className="flex items-center justify-center mb-8">
             <StepIndicator current={state.step} />
           </div>
 
-          <div className="flex-1">{renderStep()}</div>
+          <div className="flex-1 relative">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={state.step}
+                custom={direction}
+                variants={stepVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+              >
+                {renderStep()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {showNav && (
-            <div className="flex items-center gap-3 pt-6">
+            <motion.div
+              className="flex items-center gap-3 pt-6"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.25 }}
+            >
               <button
                 onClick={back}
                 className="flex-1 rounded-full border border-onboarding-muted/30 py-3.5 font-semibold text-onboarding-muted transition-colors hover:border-onboarding-text hover:text-onboarding-text"
@@ -98,7 +147,7 @@ const OnboardingFlow = () => {
               >
                 Next
               </button>
-            </div>
+            </motion.div>
           )}
         </div>
       )}

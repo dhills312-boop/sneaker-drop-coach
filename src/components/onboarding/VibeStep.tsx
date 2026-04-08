@@ -1,30 +1,14 @@
 import { motion } from 'framer-motion';
 import type { Vibe } from '@/types/onboarding';
+import { VIBE_ICON_MAP } from './ShoeIcons';
 
-// Shoe silhouette grid — 3×3 crop from 43374.jpg
-// Icons (0-8, L→R, T→B): 0=runner, 1=high-top, 2=loafer, 3=low-profile, 4=AF1, 5=foam runner, 6=runner2, 7=maxed runner, 8=classic3stripe
-const shoeIconsImg = new URL('../../assets/images/43374.jpg', import.meta.url).href;
-
-function shoeIconStyle(iconIdx: number): React.CSSProperties {
-  const col = iconIdx % 3;
-  const row = Math.floor(iconIdx / 3);
-  return {
-    backgroundImage: `url(${shoeIconsImg})`,
-    backgroundSize: '300% 300%',
-    backgroundPosition: `${col * 50}% ${row * 50}%`,
-    backgroundRepeat: 'no-repeat',
-    width: '100%',
-    height: '100%',
-  };
-}
-
-const VIBES: { id: Vibe; label: string; desc: string; shoeIcon: number; accent: string }[] = [
-  { id: 'hype',        label: '🔥 Hype',        desc: 'Limited drops & collabs',        shoeIcon: 1, accent: '#F87171' },
-  { id: 'retro',       label: '🕹️ Retro',       desc: 'Vintage classics & throwbacks',  shoeIcon: 0, accent: '#FBBF24' },
-  { id: 'performance', label: '🏃 Performance',  desc: 'Built for the court & track',    shoeIcon: 7, accent: '#34D399' },
-  { id: 'everyday',    label: '👟 Everyday',     desc: 'Clean, versatile go-tos',        shoeIcon: 4, accent: '#60A5FA' },
-  { id: 'luxe',        label: '💎 Luxe',         desc: 'Premium materials & designer',   shoeIcon: 2, accent: '#A78BFA' },
-  { id: 'outdoor',     label: '🏔️ Outdoor',     desc: 'Trail-ready & rugged',           shoeIcon: 6, accent: '#6EE7B7' },
+const VIBES: { id: Vibe; label: string; desc: string; accent: string }[] = [
+  { id: 'hype',        label: '🔥 Hype',        desc: 'Limited drops & collabs',        accent: '#F87171' },
+  { id: 'retro',       label: '🕹️ Retro',       desc: 'Vintage classics & throwbacks',  accent: '#FBBF24' },
+  { id: 'performance', label: '🏃 Performance',  desc: 'Built for the court & track',    accent: '#34D399' },
+  { id: 'everyday',    label: '👟 Everyday',     desc: 'Clean, versatile go-tos',        accent: '#60A5FA' },
+  { id: 'luxe',        label: '💎 Luxe',         desc: 'Premium materials & designer',   accent: '#A78BFA' },
+  { id: 'outdoor',     label: '🏔️ Outdoor',     desc: 'Trail-ready & rugged',           accent: '#6EE7B7' },
 ];
 
 interface VibeStepProps {
@@ -57,6 +41,7 @@ const VibeStep = ({ selected, onChange }: VibeStepProps) => {
       <div className="grid grid-cols-2 gap-3">
         {VIBES.map((vibe, i) => {
           const active = selected.includes(vibe.id);
+          const Icon = VIBE_ICON_MAP[vibe.id];
           return (
             <motion.button
               key={vibe.id}
@@ -71,21 +56,16 @@ const VibeStep = ({ selected, onChange }: VibeStepProps) => {
                 borderWidth: active ? 2 : 1,
                 borderStyle: 'solid',
               }}
-              className={`flex flex-col items-start gap-2 rounded-2xl p-4 text-left transition-colors ${
+              className={`relative flex flex-col items-center gap-2 rounded-2xl p-4 text-left transition-colors ${
                 active
                   ? 'bg-brand-purple/15 text-onboarding-text'
                   : 'bg-onboarding-surface text-onboarding-text hover:bg-onboarding-surface/80'
               }`}
             >
-              {/* Shoe silhouette icon */}
-              <motion.div
-                animate={{ scale: active ? 1.08 : 1 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="w-full h-14 rounded-lg overflow-hidden"
-                style={{ backgroundColor: 'rgba(255,255,255,0.04)' }}
-              >
-                <div style={shoeIconStyle(vibe.shoeIcon)} />
-              </motion.div>
+              {/* Vector shoe icon */}
+              <div className="w-full h-14 flex items-center justify-center">
+                {Icon && <Icon color={active ? vibe.accent : 'rgba(255,255,255,0.4)'} size={52} />}
+              </div>
 
               <span className="font-syne font-bold text-base">{vibe.label}</span>
               <span className="text-xs text-onboarding-muted">{vibe.desc}</span>
@@ -94,7 +74,6 @@ const VibeStep = ({ selected, onChange }: VibeStepProps) => {
                 <motion.div
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0 }}
                   transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                   className="absolute top-3 right-3 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold"
                   style={{ background: vibe.accent, color: '#fff' }}

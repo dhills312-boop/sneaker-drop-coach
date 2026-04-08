@@ -13,7 +13,21 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        syne: ['Syne', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
+      },
       colors: {
+        'brand-purple': {
+          DEFAULT: 'hsl(var(--brand-purple))',
+          foreground: 'hsl(var(--brand-purple-foreground))',
+        },
+        onboarding: {
+          bg: 'hsl(var(--onboarding-bg))',
+          surface: 'hsl(var(--onboarding-surface))',
+          text: 'hsl(var(--onboarding-text))',
+          muted: 'hsl(var(--onboarding-muted))',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

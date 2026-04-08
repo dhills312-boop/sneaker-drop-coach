@@ -1,4 +1,5 @@
 import AnimationSlot from './AnimationSlot';
+import { LOTTIE_URLS } from './lottieUrls';
 
 const SIZES = [
   '4', '4.5', '5', '5.5', '6', '6.5', '7', '7.5',
@@ -22,7 +23,7 @@ const SizeStep = ({ selected, onChange }: SizeStepProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <AnimationSlot label="sneaker-morpher" className="h-32 w-full" />
+      <AnimationSlot label="sneaker-morpher" src={LOTTIE_URLS.sneakerMorph} className="h-36 w-full" />
       <h2 className="font-syne text-3xl font-bold text-onboarding-text">
         What's your size?
       </h2>

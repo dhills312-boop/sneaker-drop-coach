@@ -1,6 +1,7 @@
 import type { AlertPrefs } from '@/types/onboarding';
 import { Switch } from '@/components/ui/switch';
 import AnimationSlot from './AnimationSlot';
+import robotAnim from '@/assets/lottie/Robot-Bot_3D.json';
 
 interface AlertsStepProps {
   alerts: AlertPrefs;
@@ -20,10 +21,15 @@ const AlertsStep = ({ alerts, onChange }: AlertsStepProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="font-syne text-3xl font-bold text-onboarding-text">
-        Stay in the loop
-      </h2>
-      <p className="text-onboarding-muted text-sm">Choose what alerts you want</p>
+      <div className="flex items-center gap-4">
+        <AnimationSlot label="robot-bot" animationData={robotAnim} className="h-20 w-20 shrink-0" />
+        <div>
+          <h2 className="font-syne text-3xl font-bold text-onboarding-text">
+            Stay in the loop
+          </h2>
+          <p className="text-onboarding-muted text-sm">Choose what alerts you want</p>
+        </div>
+      </div>
       <div className="flex flex-col gap-3">
         {ALERT_OPTIONS.map((opt) => (
           <div

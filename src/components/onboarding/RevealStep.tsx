@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import AnimationSlot from './AnimationSlot';
+import aiLoaderAnim from '@/assets/lottie/Ai_loading_model.json';
+import confettiAnim from '@/assets/lottie/success_confetti.json';
+import trophyAnim from '@/assets/lottie/Trophy.json';
 
 interface RevealStepProps {
   onFinish: () => void;
@@ -17,23 +20,17 @@ const RevealStep = ({ onFinish }: RevealStepProps) => {
     <div className="flex flex-col items-center justify-center min-h-[70vh] gap-8 text-center">
       {phase === 'loading' ? (
         <>
-          <AnimationSlot label="loader-feed-building" className="w-32 h-32" />
+          <AnimationSlot label="loader-feed-building" animationData={aiLoaderAnim} className="w-40 h-40" />
           <h2 className="font-syne text-2xl font-bold text-onboarding-text">
             Building your feed…
           </h2>
-          <div className="flex gap-1">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className="h-2 w-2 rounded-full bg-brand-purple animate-pulse"
-                style={{ animationDelay: `${i * 200}ms` }}
-              />
-            ))}
-          </div>
         </>
       ) : (
         <>
-          <AnimationSlot label="confetti-burst" className="w-40 h-40" />
+          <div className="relative w-48 h-48">
+            <AnimationSlot label="confetti-burst" animationData={confettiAnim} loop={false} className="absolute inset-0 w-full h-full" />
+            <AnimationSlot label="trophy" animationData={trophyAnim} loop={false} className="absolute inset-0 w-full h-full" />
+          </div>
           <h2 className="font-syne text-3xl font-bold text-onboarding-text">
             You're all set! 🎉
           </h2>

@@ -1,14 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { INITIAL_STATE, TOTAL_STEPS, type OnboardingState, type Vibe, type AlertPrefs } from '@/types/onboarding';
+import { INITIAL_STATE, TOTAL_STEPS, type OnboardingState, type ShopperType, type AlertPrefs } from '@/types/onboarding';
 import StepIndicator from './StepIndicator';
 import WelcomeStep from './WelcomeStep';
 import SizeStep from './SizeStep';
 import BrandStep from './BrandStep';
-import VibeStep from './VibeStep';
+import ShopperTypeStep from './ShopperTypeStep';
 import BudgetStep from './BudgetStep';
 import AlertsStep from './AlertsStep';
+import GradientSweepStep from './GradientSweepStep';
 import RevealStep from './RevealStep';
 import Particles from './Particles';
 
@@ -65,9 +66,13 @@ const OnboardingFlow = () => {
     switch (state.step) {
       case 1: return state.sizes.length > 0;
       case 2: return state.brands.length > 0;
-      case 3: return state.vibes.length > 0;
+      case 3: return state.shopperType !== null;
       default: return true;
     }
+  };
+
+  const handleShopperSelect = (type: ShopperType) => {
+    update({ shopperType: type, step: state.step + 1 });
   };
 
   const finish = () => {
@@ -84,19 +89,29 @@ const OnboardingFlow = () => {
       case 2:
         return <BrandStep selected={state.brands} onChange={(brands) => update({ brands })} />;
       case 3:
-        return <VibeStep selected={state.vibes} onChange={(vibes: Vibe[]) => update({ vibes })} />;
+        return <ShopperTypeStep brands={state.brands} onSelect={handleShopperSelect} />;
       case 4:
         return <BudgetStep budget={state.budget} onChange={(budget) => update({ budget })} />;
       case 5:
         return <AlertsStep alerts={state.alerts} onChange={(alerts: AlertPrefs) => update({ alerts })} />;
       case 6:
+        return (
+          <GradientSweepStep
+            brands={state.brands}
+            sizes={state.sizes}
+            shopperType={state.shopperType ?? 'casual'}
+            onNext={next}
+          />
+        );
+      case 7:
         return <RevealStep onFinish={finish} />;
       default:
         return null;
     }
   };
 
-  const showNav = state.step > 0 && state.step < TOTAL_STEPS - 1;
+  // Hide nav on welcome (0), shopper type (3, auto-advances), gradient sweep (6, has own button), reveal (7)
+  const showNav = state.step > 0 && state.step < TOTAL_STEPS - 1 && state.step !== 3 && state.step !== 6;
 
   return (
     <div className="relative min-h-screen bg-onboarding-bg text-onboarding-text font-inter overflow-hidden noise-overlay">

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimationSlot from './AnimationSlot';
 import aiLoaderAnim from '@/assets/lottie/Ai_loading_model.json';
-import confettiAnim from '@/assets/lottie/success_confetti.json';
+import confettiAnim from '@/assets/lottie/success-celebration.json';
 import trophyAnim from '@/assets/lottie/Trophy.json';
 
 interface RevealStepProps {

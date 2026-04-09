@@ -10,6 +10,7 @@ import VibeStep from './VibeStep';
 import BudgetStep from './BudgetStep';
 import AlertsStep from './AlertsStep';
 import RevealStep from './RevealStep';
+import Particles from './Particles';
 
 const STORAGE_KEY = 'hf_onboarding_state';
 
@@ -99,6 +100,7 @@ const OnboardingFlow = () => {
 
   return (
     <div className="relative min-h-screen bg-onboarding-bg text-onboarding-text font-inter overflow-hidden noise-overlay">
+      <Particles />
       {state.step === 0 ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

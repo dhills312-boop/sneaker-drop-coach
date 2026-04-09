@@ -16,7 +16,7 @@ const BudgetStep = ({ budget, onChange }: BudgetStepProps) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h2 className="font-syne text-3xl font-bold text-onboarding-text">
+        <h2 className="font-syne text-3xl font-extrabold gradient-text-purple">
           Set your budget
         </h2>
         <p className="text-onboarding-muted text-sm mt-2">
@@ -32,38 +32,38 @@ const BudgetStep = ({ budget, onChange }: BudgetStepProps) => {
         <AnimationSlot label="budget-sneaker-morph" animationData={analyticsAnim} className="h-32 w-full" />
       </motion.div>
 
-      <div className="flex flex-col gap-4 rounded-2xl bg-onboarding-surface p-6">
+      <div className="flex flex-col gap-5 glass-card rounded-2xl p-6">
         <div className="flex items-center justify-between">
-          <span className="font-syne text-2xl font-bold text-onboarding-text">
+          <span className="font-syne text-3xl font-extrabold gradient-text-purple">
             ${budget[0]}
           </span>
-          <span className="text-onboarding-muted">—</span>
-          <span className="font-syne text-2xl font-bold text-onboarding-text">
+          <span className="text-onboarding-muted/40 text-lg">—</span>
+          <span className="font-syne text-3xl font-extrabold gradient-text-purple">
             ${budget[1]}
           </span>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="text-xs text-onboarding-muted mb-1 block">Min</label>
+            <label className="text-xs text-onboarding-muted mb-1.5 block uppercase tracking-wider font-semibold">Min</label>
             <Slider
               value={[budget[0]]}
               min={0}
               max={budget[1] - 10}
               step={10}
               onValueChange={([val]) => onChange([val, budget[1]])}
-              className="[&_[role=slider]]:bg-brand-purple [&_[role=slider]]:border-brand-purple [&_.bg-primary]:bg-brand-purple"
+              className="[&_[role=slider]]:bg-brand-purple [&_[role=slider]]:border-brand-purple [&_[role=slider]]:shadow-[0_0_10px_hsl(263_90%_58%/0.4)] [&_.bg-primary]:bg-brand-purple"
             />
           </div>
           <div>
-            <label className="text-xs text-onboarding-muted mb-1 block">Max</label>
+            <label className="text-xs text-onboarding-muted mb-1.5 block uppercase tracking-wider font-semibold">Max</label>
             <Slider
               value={[budget[1]]}
               min={budget[0] + 10}
               max={1000}
               step={10}
               onValueChange={([val]) => onChange([budget[0], val])}
-              className="[&_[role=slider]]:bg-brand-purple [&_[role=slider]]:border-brand-purple [&_.bg-primary]:bg-brand-purple"
+              className="[&_[role=slider]]:bg-brand-purple [&_[role=slider]]:border-brand-purple [&_[role=slider]]:shadow-[0_0_10px_hsl(263_90%_58%/0.4)] [&_.bg-primary]:bg-brand-purple"
             />
           </div>
         </div>

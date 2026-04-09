@@ -45,7 +45,7 @@ const SizeStep = ({ selected, onChange }: SizeStepProps) => {
               onClick={() => toggle(size)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.85 }}
-              className={`rounded-xl py-3 text-sm font-bold transition-all duration-200 ${
+              className={`rounded-xl py-3 text-sm font-bold transition-all duration-200 card-elevated ${
                 active
                   ? 'glass-card-active text-onboarding-text glow-purple-sm'
                   : 'glass-card text-onboarding-muted hover:text-onboarding-text'

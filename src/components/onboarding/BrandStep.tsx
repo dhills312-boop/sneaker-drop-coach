@@ -1,18 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BRANDS = [
-  { id: 'nike',        label: 'Nike',        emoji: '✓' },
-  { id: 'adidas',      label: 'Adidas',      emoji: '✓' },
-  { id: 'new-balance', label: 'New Balance',  emoji: '✓' },
-  { id: 'jordan',      label: 'Jordan',      emoji: '✓' },
-  { id: 'yeezy',       label: 'Yeezy',       emoji: '✓' },
-  { id: 'asics',       label: 'ASICS',       emoji: '✓' },
-  { id: 'puma',        label: 'Puma',        emoji: '✓' },
-  { id: 'reebok',      label: 'Reebok',      emoji: '✓' },
-  { id: 'converse',    label: 'Converse',    emoji: '✓' },
-  { id: 'vans',        label: 'Vans',        emoji: '✓' },
-  { id: 'salomon',     label: 'Salomon',     emoji: '✓' },
-  { id: 'on',          label: 'On',          emoji: '✓' },
+  { id: 'nike',        label: 'Nike',        bgUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=40' },
+  { id: 'adidas',      label: 'Adidas',      bgUrl: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=200&q=40' },
+  { id: 'new-balance', label: 'New Balance',  bgUrl: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=200&q=40' },
+  { id: 'jordan',      label: 'Jordan',      bgUrl: 'https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=200&q=40' },
+  { id: 'yeezy',       label: 'Yeezy',       bgUrl: 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?w=200&q=40' },
+  { id: 'asics',       label: 'ASICS',       bgUrl: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=200&q=40' },
+  { id: 'puma',        label: 'Puma',        bgUrl: 'https://images.unsplash.com/photo-1608379743498-63cc52ed0e8e?w=200&q=40' },
+  { id: 'reebok',      label: 'Reebok',      bgUrl: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=200&q=40' },
+  { id: 'converse',    label: 'Converse',    bgUrl: 'https://images.unsplash.com/photo-1607522370275-f14206abe5d3?w=200&q=40' },
+  { id: 'vans',        label: 'Vans',        bgUrl: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=200&q=40' },
+  { id: 'salomon',     label: 'Salomon',     bgUrl: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=200&q=40' },
+  { id: 'on',          label: 'On',          bgUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=200&q=40' },
 ];
 
 interface BrandStepProps {
@@ -54,13 +54,22 @@ const BrandStep = ({ selected, onChange }: BrandStepProps) => {
               onClick={() => toggle(brand.id)}
               whileHover={{ scale: 1.06 }}
               whileTap={{ scale: 0.92 }}
-              className={`relative flex flex-col items-center gap-1.5 rounded-2xl py-5 px-2 font-semibold transition-all duration-200 ${
+              className={`relative flex flex-col items-center justify-center gap-1.5 rounded-2xl py-6 px-2 font-semibold transition-all duration-200 overflow-hidden card-elevated ${
                 active
                   ? 'glass-card-active text-onboarding-text glow-purple-sm'
                   : 'glass-card text-onboarding-muted hover:text-onboarding-text'
               }`}
             >
-              <span className="text-base">{brand.label}</span>
+              {/* Blurred brand background image */}
+              <div
+                className="absolute inset-0 bg-cover bg-center opacity-20 blur-[6px] scale-110"
+                style={{ backgroundImage: `url(${brand.bgUrl})` }}
+              />
+              {/* Dark overlay for readability */}
+              <div className="absolute inset-0 bg-onboarding-bg/60" />
+
+              <span className="relative z-10 text-base font-bold">{brand.label}</span>
+
               <AnimatePresence>
                 {active && (
                   <motion.span
@@ -69,7 +78,7 @@ const BrandStep = ({ selected, onChange }: BrandStepProps) => {
                     animate={{ opacity: 1, scale: 1, rotate: 0 }}
                     exit={{ opacity: 0, scale: 0 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 18 }}
-                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-brand-purple-foreground"
+                    className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-brand-purple-foreground z-10"
                     style={{ background: 'linear-gradient(135deg, hsl(263 90% 58%), hsl(340 95% 60%))' }}
                   >
                     ✓
@@ -90,7 +99,7 @@ const BrandStep = ({ selected, onChange }: BrandStepProps) => {
             transition={{ duration: 0.22 }}
             className="overflow-hidden"
           >
-            <div className="glass-card rounded-xl px-4 py-3 text-sm font-medium">
+            <div className="glass-card card-elevated rounded-xl px-4 py-3 text-sm font-medium">
               <span className="text-onboarding-muted">
                 Nice — tracking <span className="gradient-text-purple font-bold">{selected.length * 50}+</span> drops in your sizes
               </span>

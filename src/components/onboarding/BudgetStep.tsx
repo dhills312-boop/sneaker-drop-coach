@@ -32,7 +32,7 @@ const BudgetStep = ({ budget, onChange }: BudgetStepProps) => {
         <AnimationSlot label="budget-sneaker-morph" animationData={analyticsAnim} className="h-32 w-full" />
       </motion.div>
 
-      <div className="flex flex-col gap-5 glass-card rounded-2xl p-6">
+      <div className="flex flex-col gap-5 glass-card card-elevated rounded-2xl p-6">
         <div className="flex items-center justify-between">
           <span className="font-syne text-3xl font-extrabold gradient-text-purple">
             ${budget[0]}

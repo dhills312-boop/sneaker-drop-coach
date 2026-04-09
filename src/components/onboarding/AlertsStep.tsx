@@ -57,7 +57,7 @@ const AlertsStep = ({ alerts, onChange }: AlertsStepProps) => {
               initial={{ opacity: 0, x: -14 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.15 + i * 0.08, duration: 0.3 }}
-              className={`flex items-center gap-4 rounded-2xl p-5 transition-all duration-200 ${
+              className={`flex items-center gap-4 rounded-2xl p-5 transition-all duration-200 card-elevated ${
                 checked ? 'glass-card-active' : 'glass-card'
               }`}
             >

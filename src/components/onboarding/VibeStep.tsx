@@ -51,7 +51,7 @@ const VibeStep = ({ selected, onChange }: VibeStepProps) => {
               onClick={() => toggle(vibe.id)}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.95 }}
-              className={`relative flex flex-col items-center gap-2 rounded-2xl p-4 transition-all duration-200 overflow-hidden ${
+              className={`relative flex flex-col items-center gap-2 rounded-2xl p-4 transition-all duration-200 overflow-hidden card-elevated ${
                 active
                   ? `bg-gradient-to-br ${vibe.gradient} text-onboarding-text`
                   : 'glass-card text-onboarding-text hover:bg-onboarding-surface-hover'

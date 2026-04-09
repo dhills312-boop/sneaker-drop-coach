@@ -9,10 +9,10 @@ interface AlertsStepProps {
   onChange: (alerts: AlertPrefs) => void;
 }
 
-const ALERT_OPTIONS: { key: keyof AlertPrefs; label: string; desc: string }[] = [
-  { key: 'priceDrops',   label: 'Price Drops',   desc: 'Get notified when prices fall in your size' },
-  { key: 'newReleases',  label: 'New Releases',  desc: 'Be first to know about new drops' },
-  { key: 'restocks',     label: 'Restocks',      desc: 'Sold-out pairs back in your size' },
+const ALERT_OPTIONS: { key: keyof AlertPrefs; label: string; desc: string; icon: string }[] = [
+  { key: 'priceDrops',   label: 'Price Drops',   desc: 'Get notified when prices fall in your size', icon: '💰' },
+  { key: 'newReleases',  label: 'New Releases',  desc: 'Be first to know about new drops', icon: '🚀' },
+  { key: 'restocks',     label: 'Restocks',      desc: 'Sold-out pairs back in your size', icon: '🔄' },
 ];
 
 const AlertsStep = ({ alerts, onChange }: AlertsStepProps) => {
@@ -22,12 +22,11 @@ const AlertsStep = ({ alerts, onChange }: AlertsStepProps) => {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Robot + AI question */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35 }}
-        className="flex flex-col items-center gap-4 rounded-2xl bg-onboarding-surface p-5 text-center"
+        className="flex flex-col items-center gap-4 glass-card rounded-2xl p-6 text-center"
       >
         <motion.div
           animate={{ y: [0, -6, 0] }}
@@ -40,36 +39,41 @@ const AlertsStep = ({ alerts, onChange }: AlertsStepProps) => {
           />
         </motion.div>
         <div>
-          <h2 className="font-syne text-2xl font-bold text-onboarding-text mb-2">
-            Want HypeFeed AI to alert you before drops happen?
+          <h2 className="font-syne text-2xl font-extrabold gradient-text-purple mb-2">
+            Want HypeFeed AI to alert you?
           </h2>
-          <p className="text-onboarding-muted text-sm">
-            Based on your size, budget, and past W's — we'll only ping you when it actually matters.
+          <p className="text-onboarding-muted text-sm leading-relaxed">
+            Based on your size, budget, and past W's — we'll only ping you when it matters.
           </p>
         </div>
       </motion.div>
 
-      {/* Alert toggles */}
       <div className="flex flex-col gap-3">
-        {ALERT_OPTIONS.map((opt, i) => (
-          <motion.div
-            key={opt.key}
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.15 + i * 0.08, duration: 0.28 }}
-            className="flex items-center gap-4 rounded-2xl bg-onboarding-surface p-5"
-          >
-            <div className="flex-1">
-              <p className="font-semibold text-onboarding-text">{opt.label}</p>
-              <p className="text-xs text-onboarding-muted mt-0.5">{opt.desc}</p>
-            </div>
-            <Switch
-              checked={alerts[opt.key]}
-              onCheckedChange={() => toggle(opt.key)}
-              className="data-[state=checked]:bg-brand-purple shrink-0"
-            />
-          </motion.div>
-        ))}
+        {ALERT_OPTIONS.map((opt, i) => {
+          const checked = alerts[opt.key];
+          return (
+            <motion.div
+              key={opt.key}
+              initial={{ opacity: 0, x: -14 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.15 + i * 0.08, duration: 0.3 }}
+              className={`flex items-center gap-4 rounded-2xl p-5 transition-all duration-200 ${
+                checked ? 'glass-card-active' : 'glass-card'
+              }`}
+            >
+              <span className="text-xl">{opt.icon}</span>
+              <div className="flex-1">
+                <p className="font-semibold text-onboarding-text">{opt.label}</p>
+                <p className="text-xs text-onboarding-muted mt-0.5">{opt.desc}</p>
+              </div>
+              <Switch
+                checked={checked}
+                onCheckedChange={() => toggle(opt.key)}
+                className="data-[state=checked]:bg-brand-purple shrink-0"
+              />
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );

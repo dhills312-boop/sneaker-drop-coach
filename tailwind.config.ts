@@ -21,7 +21,10 @@ export default {
         'brand-purple': {
           DEFAULT: 'hsl(var(--brand-purple))',
           foreground: 'hsl(var(--brand-purple-foreground))',
+          glow: 'hsl(var(--brand-purple-glow))',
         },
+        'brand-hot': 'hsl(var(--brand-hot))',
+        'brand-cyan': 'hsl(var(--brand-cyan))',
         onboarding: {
           bg: 'hsl(var(--onboarding-bg))',
           surface: 'hsl(var(--onboarding-surface))',

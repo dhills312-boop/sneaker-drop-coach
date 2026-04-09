@@ -23,16 +23,19 @@ function loadState(): OnboardingState {
 
 const stepVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 80 : -80,
+    x: direction > 0 ? 60 : -60,
     opacity: 0,
+    filter: 'blur(4px)',
   }),
   center: {
     x: 0,
     opacity: 1,
+    filter: 'blur(0px)',
   },
   exit: (direction: number) => ({
-    x: direction > 0 ? -80 : 80,
+    x: direction > 0 ? -60 : 60,
     opacity: 0,
+    filter: 'blur(4px)',
   }),
 };
 
@@ -95,18 +98,18 @@ const OnboardingFlow = () => {
   const showNav = state.step > 0 && state.step < TOTAL_STEPS - 1;
 
   return (
-    <div className="min-h-screen bg-onboarding-bg text-onboarding-text font-inter overflow-hidden">
+    <div className="relative min-h-screen bg-onboarding-bg text-onboarding-text font-inter overflow-hidden noise-overlay">
       {state.step === 0 ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
         >
           {renderStep()}
         </motion.div>
       ) : (
-        <div className="mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
+        <div className="relative z-10 mx-auto flex min-h-screen max-w-md flex-col px-5 py-8">
           <div className="flex items-center justify-center mb-8">
             <StepIndicator current={state.step} />
           </div>
@@ -120,7 +123,7 @@ const OnboardingFlow = () => {
                 initial="enter"
                 animate="center"
                 exit="exit"
-                transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
               >
                 {renderStep()}
               </motion.div>
@@ -136,14 +139,14 @@ const OnboardingFlow = () => {
             >
               <button
                 onClick={back}
-                className="flex-1 rounded-full border border-onboarding-muted/30 py-3.5 font-semibold text-onboarding-muted transition-colors hover:border-onboarding-text hover:text-onboarding-text"
+                className="flex-1 rounded-full py-3.5 font-semibold text-onboarding-muted transition-all duration-200 glass-card hover:text-onboarding-text hover:glow-purple-sm"
               >
                 Back
               </button>
               <button
                 onClick={next}
                 disabled={!canProceed()}
-                className="flex-1 rounded-full bg-brand-purple py-3.5 font-semibold text-brand-purple-foreground transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-40 disabled:hover:scale-100"
+                className="flex-1 rounded-full btn-premium py-3.5 font-bold text-brand-purple-foreground transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-30 disabled:hover:scale-100 disabled:shadow-none"
               >
                 Next
               </button>

@@ -1,37 +1,28 @@
 
 
-## Integrate Lottie Animations into Onboarding
+## Particles Following Vector Paths — PlayStation Style
 
-Install `lottie-react` and replace the dashed-box `AnimationSlot` placeholders with real Lottie animations using the uploaded JSON files.
+The current particles float randomly with simple oscillations. The PS5-style effect has particles flowing along curved vector paths — like streams of light tracing invisible curves across the screen, creating a sense of directed motion and energy.
 
-### Animation mapping
+### Approach
 
-| Lottie File | Where it goes | Replaces |
-|---|---|---|
-| `Welcome.json` | WelcomeStep | `logo-particle-reveal` placeholder |
-| `Ai_loading_model.json` | RevealStep loading phase | `loader-feed-building` placeholder + pulse dots |
-| `success_confetti.json` | RevealStep done phase (background) | `confetti-burst` placeholder |
-| `Trophy.json` | RevealStep done phase (foreground, layered over confetti) | Additional celebration element |
-| `Business_Analytics.json` | BudgetStep | `budget-sneaker-morph` placeholder |
-| `Robot-Bot_3D.json` | AlertsStep header area | New decorative element above "Stay in the loop" |
-| `Loading_Dots_Blue.json` | Not used (the AI loader already covers the loading state) | — |
-| `Success_celebration.json` | Not used (success_confetti covers this) | — |
-| `Hexagon_loading.json` | StepIndicator or skip | Optional accent; skip for now |
-| `.riv` file | Skipped — requires Rive runtime, out of scope | — |
+Replace the random-drift Framer Motion animations with an **SVG-based approach using `<canvas>` or CSS `offset-path`**. Given browser support and performance, we'll use **Canvas 2D** for smooth, high-particle-count rendering:
 
-### Files changed
+1. **Replace `Particles.tsx`** with a Canvas-based component using `requestAnimationFrame`
+2. **Define 3-4 bezier curve paths** (flowing S-curves, arcs) that span the viewport — similar to the PS5 ribbon/flow aesthetic
+3. **Distribute ~60-80 particles** across these paths, each at a random progress offset
+4. **Each particle** travels along its assigned curve at varying speeds, with:
+   - Subtle size pulsing and opacity fade based on position
+   - Glow effect via `shadowBlur`
+   - Trail effect by not fully clearing the canvas each frame (slight alpha fade)
+5. **Color palette** stays the same brand purples/pinks/cyans
+6. Particles loop seamlessly when they reach the end of their path
 
-1. **Install** `lottie-react`
-2. **Copy** 5 Lottie JSON files to `src/assets/lottie/`
-3. **Rewrite `AnimationSlot.tsx`** — accept an optional `animationData` prop; when provided, render `<Lottie>` instead of the dashed placeholder
-4. **Update `WelcomeStep.tsx`** — import `Welcome.json`, pass to AnimationSlot
-5. **Update `BudgetStep.tsx`** — import `Business_Analytics.json`
-6. **Update `AlertsStep.tsx`** — add Robot-Bot animation above the heading
-7. **Update `RevealStep.tsx`** — use `Ai_loading_model.json` for loading phase, layer `success_confetti.json` + `Trophy.json` for done phase
+### Technical Details
 
-### Technical details
-
-- `AnimationSlot` gains an optional `animationData` prop (Lottie JSON object). When present, renders `<Lottie animationData={data} loop autoplay />` with the same sizing/rounding classes. When absent, falls back to the current dashed placeholder.
-- RevealStep done phase stacks confetti (full-width, absolute positioned behind) with trophy (centered, foreground) using `relative`/`absolute` positioning.
-- All Lottie files imported as ES modules from `src/assets/lottie/` for proper bundling.
+- **File changed**: `src/components/onboarding/Particles.tsx` — full rewrite
+- **No new dependencies** — pure Canvas 2D API
+- **Cubic bezier curves** defined as control point arrays, sampled using `t` parameter
+- **Trail effect**: Clear canvas with `rgba(0,0,0,0.05)` overlay each frame instead of full clear
+- **Performance**: `requestAnimationFrame` loop with cleanup on unmount
 

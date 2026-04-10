@@ -1,28 +1,46 @@
 
 
-## Particles Following Vector Paths — PlayStation Style
+## Refined Particle Dynamics — Float, Then Follow
 
-The current particles float randomly with simple oscillations. The PS5-style effect has particles flowing along curved vector paths — like streams of light tracing invisible curves across the screen, creating a sense of directed motion and energy.
+### Problems with Current Implementation
+1. **Visible paths**: All particles sit exactly on the bezier curves, making the paths obvious
+2. **No floating behavior**: Particles lock to paths immediately — no organic drift
+3. **Trails make paths more visible**: The semi-transparent clear (`rgba(0,0,0,0.06)`) leaves visible streaks along the curves
+4. **Not enough particles**: 70 feels sparse for a premium ambient effect
 
-### Approach
+### New Behavior Model
 
-Replace the random-drift Framer Motion animations with an **SVG-based approach using `<canvas>` or CSS `offset-path`**. Given browser support and performance, we'll use **Canvas 2D** for smooth, high-particle-count rendering:
+Each particle has two modes that cycle on intervals:
 
-1. **Replace `Particles.tsx`** with a Canvas-based component using `requestAnimationFrame`
-2. **Define 3-4 bezier curve paths** (flowing S-curves, arcs) that span the viewport — similar to the PS5 ribbon/flow aesthetic
-3. **Distribute ~60-80 particles** across these paths, each at a random progress offset
-4. **Each particle** travels along its assigned curve at varying speeds, with:
-   - Subtle size pulsing and opacity fade based on position
-   - Glow effect via `shadowBlur`
-   - Trail effect by not fully clearing the canvas each frame (slight alpha fade)
-5. **Color palette** stays the same brand purples/pinks/cyans
-6. Particles loop seamlessly when they reach the end of their path
+- **Drift mode** (default): Particle floats randomly with gentle Brownian motion — small velocity with slight wandering. Looks like ambient dust/stars.
+- **Follow mode** (triggered on a timer): Particle begins lerping toward its assigned bezier path position. It doesn't snap — it eases toward the path over ~2-3 seconds, then holds briefly before releasing back to drift.
 
-### Technical Details
+Each particle has its own independent timer offset so they don't all snap to paths simultaneously.
 
-- **File changed**: `src/components/onboarding/Particles.tsx` — full rewrite
-- **No new dependencies** — pure Canvas 2D API
-- **Cubic bezier curves** defined as control point arrays, sampled using `t` parameter
-- **Trail effect**: Clear canvas with `rgba(0,0,0,0.05)` overlay each frame instead of full clear
-- **Performance**: `requestAnimationFrame` loop with cleanup on unmount
+### Technical Changes — Single File
+
+**`src/components/onboarding/Particles.tsx`** — full rewrite
+
+**Particle state** gains new fields:
+- `x, y` — actual screen position (starts random)
+- `vx, vy` — drift velocity (small random values, with gentle noise steering)
+- `mode` — `'drift'` or `'follow'`
+- `modeTimer` — countdown until next mode switch
+- `followStrength` — 0→1 easing when entering follow mode, 1→0 when leaving
+- `t` — progress along assigned bezier (advances slowly always)
+
+**Per-frame logic**:
+1. Update `modeTimer`; when it hits zero, toggle mode and reset timer (drift: 3-6s, follow: 2-4s)
+2. Compute bezier target position from `t`
+3. In drift mode: apply random walk to `vx/vy`, update `x/y`, ease `followStrength` toward 0
+4. In follow mode: ease `followStrength` toward 1, lerp `x/y` toward bezier target
+5. Always: `actualPos = lerp(driftPos, bezierPos, followStrength)`
+
+**Rendering changes**:
+- **Full clear each frame** (no trails) — `clearRect` instead of semi-transparent overlay
+- **More particles**: bump to ~120
+- **Smaller glow**: reduce `shadowBlur` to `size * 2` so dots feel like floating dust, not streaking lights
+- Keep size pulsing and edge fade
+
+This creates particles that appear to float randomly, then periodically and organically coalesce along invisible curves before dispersing again.
 

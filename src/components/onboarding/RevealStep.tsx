@@ -31,7 +31,7 @@ const RevealStep = ({ onFinish }: RevealStepProps) => {
   }, [loadIdx, phase]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[70vh] gap-8 text-center px-4 overflow-hidden">
+    <div className="relative flex flex-col items-center justify-center min-h-[70vh] gap-8 text-center px-4">
       {/* Ambient glow for done phase */}
       {phase === 'done' && (
         <motion.div
